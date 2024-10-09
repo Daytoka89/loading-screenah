@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ascension de l'Humanité - Loading Screen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0B0C10; /* Fond sombre et élégant */
+            font-family: 'Orbitron', sans-serif;
+            color: #C5C6C7; /* Texte gris clair */
+        }
+        #loading-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        #loading-image {
+            width: 100%;
+            height: auto; 
+            object-fit: cover;
+            transition: opacity 1s;
+            animation: fadeIn 1s forwards; /* Animation de fade in */
+        }
+        #loading-text {
+            position: absolute;
+            font-size: 48px; /* Taille de police plus grande */
+            text-align: center;
+            bottom: 35%; /* Positionnement amélioré */
+            z-index: 2; 
+            text-shadow: 0 0 20px rgba(197, 198, 199, 0.7); /* Ombre grise pour le texte */
+            animation: fadeIn 2s ease; /* Animation de fade in */
+        }
+        #logo {
+            position: absolute;
+            top: 20px; 
+            left: 20px;
+            width: 100px; 
+            height: auto;
+            z-index: 2;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        #loading-bar {
+            position: absolute;
+            bottom: 15%; /* Positionnement de la barre de chargement */
+            width: 80%;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.2); /* Barre de chargement semi-transparente */
+            border: 2px solid #C5C6C7; /* Bordure grise claire */
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 1;
+        }
+        #progress {
+            height: 100%;
+            width: 0;
+            background-color: #66FCF1; /* Couleur turquoise pour la barre de chargement */
+            animation: loading 5s forwards; /* Animation de la barre de chargement */
+        }
+        @keyframes loading {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        #mute-button {
+            position: absolute;
+            top: 120px; /* Positionné juste en dessous du logo */
+            background-color: #66FCF1;
+            color: #0B0C10;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 3;
+        }
+        #mute-button:hover {
+            background-color: #45a2a0;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-container">
+        <img id="loading-image" src="image1.png" alt="Loading...">
+        <img id="logo" src="logo.png" alt="Logo Ascension de l'Humanité">
+        <div id="loading-text">Chargement du serveur Ascension de l'Humanité...<br>Veuillez patienter.</div>
+        <div id="loading-bar">
+            <div id="progress"></div> <!-- Barre de chargement -->
+        </div>
+        <!-- Bouton pour activer/désactiver la musique -->
+        <button id="mute-button" onclick="toggleMusic()">Activer la musique</button>
+    </div>
+    <audio id="background-audio" loop>
+        <source src="music.wav" type="audio/wav"> <!-- Fichier audio WAV -->
+        Votre navigateur ne supporte pas la balise audio.
+    </audio>
+    
+    <script>
+        const images = [
+            'image1.png',
+            'image2.png',
+            'image3.png' // Ajoutez plus d'images ici
+        ];
+        
+        let currentIndex = 0;
+        const loadingImage = document.getElementById('loading-image');
+        const audio = document.getElementById("background-audio");
+
+        // Régle le volume de la musique
+        audio.volume = 0.1; // Réduire le volume à 10%
+        audio.pause(); // Musique en pause par défaut
+
+        // Fonction pour changer l'image
+        function changeImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            loadingImage.style.opacity = 0; // Faire disparaître l'image
+            setTimeout(() => {
+                loadingImage.src = images[currentIndex];
+                loadingImage.onload = () => {
+                    loadingImage.style.opacity = 1; // Faire apparaître la nouvelle image
+                };
+            }, 1000); // Temps d'attente pour la transition
+        }
+
+        // Changer d'image toutes les 5 secondes
+        setInterval(changeImage, 5000);
+
+        // Fonction pour activer/désactiver la musique
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                document.getElementById("mute-button").textContent = "Désactiver la musique"; // Changer le texte du bouton
+            } else {
+                audio.pause();
+                document.getElementById("mute-button").textContent = "Activer la musique"; // Changer le texte du bouton
+            }
+        }
+    </script>
+</body>
+</html>
