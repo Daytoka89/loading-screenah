@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spécial ARC Trooper - Loading Screen</title>
+    <title>Division Nyvaris - Loading Screen</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
     <style>
         body {
@@ -12,9 +12,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #0B0C10; /* Fond sombre et élégant */
+            background-color: #0B0C10;
             font-family: 'Orbitron', sans-serif;
-            color: #C5C6C7; /* Texte gris clair */
+            color: #C5C6C7;
         }
         #loading-container {
             position: relative;
@@ -30,16 +30,25 @@
             height: auto; 
             object-fit: cover;
             transition: opacity 1s;
-            animation: fadeIn 1s forwards; /* Animation de fade in */
+            animation: fadeIn 1s forwards;
         }
         #loading-text {
             position: absolute;
-            font-size: 48px; /* Taille de police plus grande */
+            font-size: 48px;
             text-align: center;
-            bottom: 35%; /* Positionnement amélioré */
-            z-index: 2; 
-            text-shadow: 0 0 20px rgba(197, 198, 199, 0.7); /* Ombre grise pour le texte */
-            animation: fadeIn 2s ease; /* Animation de fade in */
+            bottom: 35%;
+            z-index: 2;
+            text-shadow: 0 0 20px rgba(197, 198, 199, 0.7);
+            animation: fadeIn 2s ease;
+        }
+        #loading-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: #66FCF1;
+            text-shadow: 0 0 10px rgba(102, 252, 241, 0.7);
+            animation: fadeIn 2s ease;
         }
         #logo {
             position: absolute;
@@ -53,27 +62,6 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        #loading-bar {
-            position: absolute;
-            bottom: 15%; /* Positionnement de la barre de chargement */
-            width: 80%;
-            height: 20px;
-            background-color: rgba(255, 255, 255, 0.2); /* Barre de chargement semi-transparente */
-            border: 2px solid #C5C6C7; /* Bordure grise claire */
-            border-radius: 10px;
-            overflow: hidden;
-            z-index: 1;
-        }
-        #progress {
-            height: 100%;
-            width: 0;
-            background-color: #66FCF1; /* Couleur turquoise pour la barre de chargement */
-            animation: loading 5s forwards; /* Animation de la barre de chargement */
-        }
-        @keyframes loading {
-            from { width: 0; }
-            to { width: 100%; }
-        }
     </style>
 </head>
 <body>
@@ -81,12 +69,10 @@
         <img id="loading-image" src="image1.png" alt="Loading...">
         <img id="logo" src="logo.png" alt="Logo Ascension de l'Humanité">
         <div id="loading-text">Chargement du serveur Spécial ARC Trooper...<br>Veuillez patienter.</div>
-        <div id="loading-bar">
-            <div id="progress"></div> <!-- Barre de chargement -->
-        </div>
+        <div id="loading-info">Chargement en cours...</div>
     </div>
     <audio id="background-audio" loop>
-        <source src="music.mp3" type="audio/mp3"> <!-- Fichier audio WAV -->
+        <source src="music.mp3" type="audio/mp3">
         Votre navigateur ne supporte pas la balise audio.
     </audio>
     
@@ -101,27 +87,23 @@
         const loadingImage = document.getElementById('loading-image');
         const audio = document.getElementById("background-audio");
 
-        // Régle le volume de la musique
-        audio.volume = 0.1; // Réduire le volume à 10%
+        audio.volume = 0.1;
         
-        // Lancer la musique après 2 secondes
         setTimeout(() => {
             audio.play();
         }, 2000);
 
-        // Fonction pour changer l'image
         function changeImage() {
             currentIndex = (currentIndex + 1) % images.length;
-            loadingImage.style.opacity = 0; // Faire disparaître l'image
+            loadingImage.style.opacity = 0;
             setTimeout(() => {
                 loadingImage.src = images[currentIndex];
                 loadingImage.onload = () => {
-                    loadingImage.style.opacity = 1; // Faire apparaître la nouvelle image
+                    loadingImage.style.opacity = 1;
                 };
-            }, 1000); // Temps d'attente pour la transition
+            }, 1000);
         }
 
-        // Changer d'image toutes les 5 secondes
         setInterval(changeImage, 5000);
     </script>
 </body>
