@@ -3,111 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Enclave Florida Command | Initialisation</title>
+  <title>ENCLAVE // Florida Command</title>
 
-  <!-- Fonts -->
+  <!-- Police terminal style -->
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
   <style>
     body {
       margin: 0;
-      overflow: hidden;
+      padding: 0;
       background-color: #000;
       font-family: 'VT323', monospace;
       color: #00ff99;
-      background-image: url("grain_texture.png");
+      background-image: url("grain_texture.png"); /* Facultatif */
       background-repeat: repeat;
       background-size: cover;
-      filter: contrast(1.15) brightness(0.9);
+      filter: contrast(1.1) brightness(0.9);
     }
 
-    #loading-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      height: 100vh;
-      background: #000;
-      position: relative;
-      animation: flicker 0.15s infinite;
-    }
-
-    /* CRT scanlines */
+    /* Scanlines CRT */
     body::after {
       content: "";
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       background: repeating-linear-gradient(
         0deg,
-        rgba(0, 255, 0, 0.05),
-        rgba(0, 255, 0, 0.05) 1px,
-        transparent 1px,
-        transparent 2px
+        rgba(0, 255, 0, 0.03),
+        rgba(0, 255, 0, 0.03) 2px,
+        transparent 2px,
+        transparent 4px
       );
       pointer-events: none;
-      z-index: 999;
+      z-index: 1000;
       mix-blend-mode: overlay;
     }
 
     @keyframes flicker {
-      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-      20%, 22%, 24%, 55% { opacity: 0.8; }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.95; }
+    }
+
+    #loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      height: 100vh;
+      animation: flicker 0.2s infinite;
+      position: relative;
+      padding: 0 20px;
     }
 
     #logo {
       position: absolute;
       top: 20px;
       left: 20px;
-      width: 100px;
-      height: auto;
-      z-index: 10;
-    }
-
-    #loading-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 0;
-      transition: opacity 1.5s ease-in-out;
-      filter: grayscale(1) contrast(1.1);
+      width: 80px;
+      opacity: 0.8;
     }
 
     #title {
-      font-size: 42px;
-      color: #00ff99;
-      text-shadow: 0 0 5px #00ff99, 0 0 15px #00ff99;
-      z-index: 2;
-      text-align: center;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
+      font-size: 40px;
+      margin-bottom: 15px;
+      text-shadow: 0 0 5px #00ff99;
     }
 
     #subtitle {
       font-size: 20px;
-      max-width: 90%;
-      text-align: center;
-      z-index: 2;
-      overflow: hidden;
+      margin-bottom: 10px;
       white-space: nowrap;
+      overflow: hidden;
       border-right: 2px solid #00ff99;
       animation: typing 4s steps(60, end), blink .75s step-end infinite;
     }
 
     #loading-info {
       position: absolute;
-      bottom: 20px;
+      bottom: 30px;
       font-size: 18px;
-      color: #00ff99;
-      text-align: center;
-      z-index: 2;
       text-shadow: 0 0 2px #00ff99;
+    }
+
+    #loading-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+      z-index: -1;
+      filter: grayscale(1) contrast(1.2);
     }
 
     @keyframes typing {
@@ -125,56 +116,43 @@
   <div id="loading-container">
     <img id="loading-image" src="image1.png" alt="Chargement..." />
     <img id="logo" src="enclave_logo.png" alt="Logo Enclave" />
-    <div id="title">ENCLAVE // FLORIDA COMMAND</div>
-    <div id="subtitle">> Initialisation du protocole stratégique : [ OPÉRATION SUNSHIELD ]</div>
-    <div id="loading-info">> Analyse des menaces externes en cours... Veuillez patienter, citoyen loyal.</div>
+    <div id="title">> ENCLAVE // FLORIDA COMMAND</div>
+    <div id="subtitle">[INITIALISATION DU SYSTÈME DE CONTRÔLE STRATÉGIQUE EN COURS...]</div>
+    <div id="loading-info">> PATIENTEZ... SYNC AVEC NŒUD DE COMMANDE : CAP CANAVERAL NODE-77</div>
   </div>
 
-  <!-- Musique de fond -->
   <audio id="background-audio" loop>
     <source src="enclave_theme.mp3" type="audio/mp3">
-    Votre navigateur ne supporte pas la lecture audio.
   </audio>
 
-  <!-- Bip terminal -->
   <audio id="terminal-beep" preload="auto">
     <source src="terminal_beep.mp3" type="audio/mp3">
   </audio>
 
   <script>
+    const images = ["image1.png", "image2.png", "image3.png", "image4.png"];
+    const imageElement = document.getElementById("loading-image");
     const audio = document.getElementById("background-audio");
     const beep = document.getElementById("terminal-beep");
-    const imageElement = document.getElementById("loading-image");
+    let current = 0;
 
-    const images = [
-      "image1.png",
-      "image2.png",
-      "image3.png",
-      "image4.png",
-      "image5.png"
-    ];
-    let currentImage = 0;
-
-    // Lecture audio de fond
-    audio.volume = 0.05;
     setTimeout(() => {
+      audio.volume = 0.05;
       audio.play();
     }, 2000);
 
-    // Bip terminal
     window.addEventListener("DOMContentLoaded", () => {
       beep.volume = 0.2;
       beep.play();
     });
 
-    // Changement d'image
     function cycleImages() {
       imageElement.style.opacity = 0;
       setTimeout(() => {
-        currentImage = (currentImage + 1) % images.length;
-        imageElement.src = images[currentImage];
+        current = (current + 1) % images.length;
+        imageElement.src = images[current];
         imageElement.onload = () => {
-          imageElement.style.opacity = 0.8;
+          imageElement.style.opacity = 0.6;
         };
       }, 1500);
     }
