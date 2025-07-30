@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Enclave Florida Command | Initialisation</title>
-  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Roboto+Condensed:wght@700&family=VT323&display=swap" rel="stylesheet">
+
   <style>
     body {
       margin: 0;
@@ -12,6 +15,10 @@
       background-color: #0f0f0f;
       font-family: 'Roboto Condensed', sans-serif;
       color: #e0e0e0;
+      background-image: url("grain_texture.png");
+      background-repeat: repeat;
+      background-size: cover;
+      filter: contrast(1.1) brightness(0.9);
     }
 
     #loading-container {
@@ -22,6 +29,36 @@
       height: 100vh;
       background: linear-gradient(to bottom, #1e1e1e, #0f0f0f);
       position: relative;
+      animation: flicker 0.15s infinite;
+    }
+
+    /* CRT Lignes */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 0, 0.05),
+        rgba(0, 255, 0, 0.05) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+      pointer-events: none;
+      z-index: 999;
+      mix-blend-mode: overlay;
+    }
+
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+      }
+      20%, 22%, 24%, 55% {
+        opacity: 0.6;
+      }
     }
 
     #logo {
@@ -51,24 +88,42 @@
       font-family: 'UnifrakturCook', cursive;
       text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
       z-index: 2;
+      text-align: center;
     }
 
     #subtitle {
       font-size: 22px;
       margin-top: 10px;
       z-index: 2;
-      color: #c9c9c9;
+      color: #00ff99;
       text-align: center;
       max-width: 80%;
+      font-family: 'VT323', monospace;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid #00ff99;
+      animation: typing 4s steps(40, end), blink .75s step-end infinite;
     }
 
     #loading-info {
       position: absolute;
       bottom: 20px;
-      font-size: 18px;
-      color: #ff5555;
+      font-size: 20px;
+      color: #00ff99;
+      font-family: 'VT323', monospace;
       text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
       z-index: 2;
+      text-align: center;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink {
+      0%, 100% { border-color: transparent }
+      50% { border-color: #00ff99 }
     }
   </style>
 </head>
@@ -81,13 +136,22 @@
     <div id="loading-info">🛡️ Analyse environnementale : Sécurisation de la zone de lancement Cap Canaveral...</div>
   </div>
 
+  <!-- Musique de fond -->
   <audio id="background-audio" loop>
     <source src="enclave_theme.mp3" type="audio/mp3">
     Votre navigateur ne supporte pas la lecture audio.
   </audio>
 
+  <!-- Son terminal -->
+  <audio id="terminal-beep" preload="auto">
+    <source src="terminal_beep.mp3" type="audio/mp3">
+  </audio>
+
   <script>
     const audio = document.getElementById("background-audio");
+    const beep = document.getElementById("terminal-beep");
+    const imageElement = document.getElementById("loading-image");
+
     const images = [
       "image1.png",
       "image2.png",
@@ -96,13 +160,20 @@
       "image5.png"
     ];
     let currentImage = 0;
-    const imageElement = document.getElementById("loading-image");
 
+    // Musique de fond
     audio.volume = 0.05;
     setTimeout(() => {
       audio.play();
     }, 2000);
 
+    // Bip terminal au démarrage
+    window.addEventListener("DOMContentLoaded", () => {
+      beep.volume = 0.2;
+      beep.play();
+    });
+
+    // Diaporama d'images
     function cycleImages() {
       imageElement.style.opacity = 0;
       setTimeout(() => {
