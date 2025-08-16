@@ -3,47 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>République en marche !</title>
+  <title>La République en marche !</title>
 
-  <!-- Police terminal style -->
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <!-- Police Star Wars style -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     body {
       margin: 0;
       padding: 0;
       background-color: #000;
-      font-family: 'VT323', monospace;
-      color: #00ff99;
-      background-image: url("grain_texture.png"); /* Facultatif */
-      background-repeat: repeat;
+      font-family: 'Orbitron', sans-serif;
+      color: #00baff; /* bleu holographique */
+      background-image: radial-gradient(circle at center, rgba(0, 40, 80, 0.4) 0%, rgba(0, 0, 0, 1) 80%);
       background-size: cover;
-      filter: contrast(1.1) brightness(0.9);
+      overflow: hidden;
     }
 
-    /* Scanlines CRT */
-    body::after {
+    /* Effet d'étoiles en mouvement */
+    body::before {
       content: "";
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 255, 0, 0.03),
-        rgba(0, 255, 0, 0.03) 2px,
-        transparent 2px,
-        transparent 4px
-      );
-      pointer-events: none;
-      z-index: 1000;
-      mix-blend-mode: overlay;
+      width: 200%;
+      height: 200%;
+      background: transparent url("https://www.transparenttextures.com/patterns/stardust.png") repeat;
+      animation: starfield 60s linear infinite;
+      opacity: 0.3;
+      z-index: -2;
     }
 
-    @keyframes flicker {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.95; }
+    @keyframes starfield {
+      from { transform: translate(0, 0); }
+      to { transform: translate(-50%, -50%); }
+    }
+
+    /* Effet de lueurs */
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 8px #00baff, 0 0 20px #0080ff, 0 0 40px #0050ff; }
+      50% { text-shadow: 0 0 4px #00baff, 0 0 10px #0080ff, 0 0 20px #0050ff; }
     }
 
     #loading-container {
@@ -53,31 +52,31 @@
       justify-content: center;
       text-align: center;
       height: 100vh;
-      animation: flicker 0.2s infinite;
       position: relative;
       padding: 0 20px;
     }
 
     #logo {
       position: absolute;
-      top: 20px;
-      left: 20px;
-      width: 80px;
-      opacity: 0.8;
+      top: 30px;
+      left: 30px;
+      width: 100px;
+      filter: drop-shadow(0 0 10px #ffd700); /* lueur dorée */
     }
 
     #title {
-      font-size: 40px;
+      font-size: 50px;
       margin-bottom: 15px;
-      text-shadow: 0 0 5px #00ff99;
+      color: #ffd700; /* doré */
+      animation: glow 2s infinite;
     }
 
     #subtitle {
-      font-size: 20px;
-      margin-bottom: 10px;
+      font-size: 22px;
+      margin-bottom: 20px;
       white-space: nowrap;
       overflow: hidden;
-      border-right: 2px solid #00ff99;
+      border-right: 2px solid #00baff;
       animation: typing 4s steps(60, end), blink .75s step-end infinite;
     }
 
@@ -85,7 +84,8 @@
       position: absolute;
       bottom: 30px;
       font-size: 18px;
-      text-shadow: 0 0 2px #00ff99;
+      color: #ffffff;
+      text-shadow: 0 0 5px #00baff;
     }
 
     #loading-image {
@@ -98,7 +98,7 @@
       opacity: 0;
       transition: opacity 1.5s ease-in-out;
       z-index: -1;
-      filter: grayscale(1) contrast(1.2);
+      filter: brightness(0.7) saturate(1.2);
     }
 
     @keyframes typing {
@@ -108,7 +108,7 @@
 
     @keyframes blink {
       0%, 100% { border-color: transparent }
-      50% { border-color: #00ff99 }
+      50% { border-color: #00baff }
     }
   </style>
 </head>
@@ -116,9 +116,9 @@
   <div id="loading-container">
     <img id="loading-image" src="image1.png" alt="Chargement..." />
     <img id="logo" src="enclave_logo.png" alt="Logo Enclave" />
-    <div id="title">> République en marche !</div>
-    <div id="subtitle">[INITIALISATION DU SYSTÈME DE CONTRÔLE STRATÉGIQUE EN COURS...]</div>
-    <div id="loading-info">> PATIENTEZ... SYNC AVEC NŒUD DE COMMANDE : Coruscant</div>
+    <div id="title">La République en marche !</div>
+    <div id="subtitle">[Initialisation du centre de commandement galactique...]</div>
+    <div id="loading-info">Synchronisation avec le Haut Commandement : Coruscant...</div>
   </div>
 
   <audio id="background-audio" loop>
@@ -161,5 +161,3 @@
   </script>
 </body>
 </html>
-
-
